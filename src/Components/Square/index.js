@@ -5,7 +5,8 @@ const Square = (props) => {
 
     return (
         <>
-            <button className={`square ${props.value}`} onClick={props.onClick}>
+            <button className={`square ${props.value}`}
+                onClick={props.onClick}>
                 {props.value}
             </button>
         </>

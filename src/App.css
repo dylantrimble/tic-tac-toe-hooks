@@ -1,9 +1,25 @@
 .main--container{
-  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100vh;
+}
+
+.logo{
+  background-color: white;
+  padding: 6px;
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 15px;
+}
+
+.board--container{
+  display: flex;
+}
+
+.board{
+  box-shadow: black 2px 5px 20px;
 }
 
 .board--row{
@@ -15,12 +31,31 @@
   margin: 25px;
 }
 
+.winner{
+  color: black;
+  background-image: url('./img/confetti.gif');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.draw{
+  color: black;
+  background-color: lightgray;
+}
+
+
 .X{
-  background-color: lightcoral;
+  background-color: #153d5b;
+  color: white;
 }
 
 .O{
-  background-color: lightblue;
+  background-color: #26c3c4;
+  color: white;
+}
+
+img{
+  height: 100px;
 }
 
 .null{
@@ -29,14 +64,19 @@
 
 .reset--button{
   font-size: 1.5rem;
+  background: aquamarine;
   margin: 30px;
+  height: 80px;
+  width: 250px;
+  border-radius: 20px;
+  border: white solid 5px;
+  box-shadow: black 2px 5px 20px;
 }
 
 
 .square{
   height: 200px;
   width: 200px;
-  border: 2px solid black;
-  font-size: 1.5rem;
+  border: 2px solid white;
+  font-size: 4rem;
 }
-

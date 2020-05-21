@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Square from '../Square/index';
 import ResetButton from '../ResetButton/index';
+import r2h from '../../img/r2h.png'
+import fellowship from '../../img/fellowships.png'
 
 const Board = () => {
     const intitalBoard = Array(9).fill(null)
@@ -12,10 +14,9 @@ const Board = () => {
 
     const handleClick = (e) => {
         const newSquares = [...squares]
-
         const winnerDeclared = Boolean(calculateWinner(squares))
         const squareAlreadyFilled = Boolean(newSquares[e])
-        if (winnerDeclared || squareAlreadyFilled) return;
+        if (winnerDeclared || squareAlreadyFilled) return
 
         newSquares[e] = playerXIsNext ? 'X' : 'O'
         setSquares(newSquares)
@@ -23,8 +24,33 @@ const Board = () => {
     }
 
     const renderSquare = (i) => {
-        return <Square value={squares[i]} onClick={() => handleClick(i)} />
+        return <Square value={squares[i]} onClick={() =>
+            handleClick(i)} />
     }
+
+
+    function isBoardFull(squares) {
+        for (let i = 0; i < squares.length; i++) {
+            if (squares[i] == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    function getStatus() {
+        if (winner) {
+            return "Congratulations Player " + winner +
+                ", you won!";
+        } else if (isBoardFull(squares)) {
+            return "Draw!";
+        } else {
+            return "Next Player is Player: " + (playerXIsNext ? "X" : "O");
+        }
+    }
+
+
     const reset = () => {
         setSquares(intitalBoard)
         setPlayerXIsNext(true)
@@ -72,32 +98,48 @@ const Board = () => {
     }
 
 
-    const status = winner ? `The winner is ${winner}` :
-        `Player ${playerXIsNext ? 'X' : 'O'} is next!`
-
     return (
         <>
-            <main className="main--container">
+            <main className={`main--container 
+            ${
+                (winner && getStatus() === "Congratulations Player " + winner + ", you won!" ||
+                    !winner && getStatus() === "Draw!") ?
+                    (getStatus() === "Draw!" ? "draw" : "winner")
+                    : (playerXIsNext ? "X" : "O")
+                }`
+            }
+            >
+                <div className="logo">
+                    <img src={r2h} alt="r2h logo" />
+                    <img src={fellowship} alt="fellowship" />
+                </div>
                 <div className="status">
-                    {status}
-                </div>
-                <div className="board--row">
-                    {renderSquare(0)}
-                    {renderSquare(1)}
-                    {renderSquare(2)}
-                </div>
-                <div className="board--row">
-                    {renderSquare(3)}
-                    {renderSquare(4)}
-                    {renderSquare(5)}
-                </div>
-                <div className="board--row">
-                    {renderSquare(6)}
-                    {renderSquare(7)}
-                    {renderSquare(8)}
+                    {getStatus()}
                 </div>
 
-                <ResetButton reset={reset} />
+                <div className="board--container">
+                    <div className="board">
+                        <div className="board--row">
+                            {renderSquare(0)}
+                            {renderSquare(1)}
+                            {renderSquare(2)}
+                        </div>
+                        <div className="board--row">
+                            {renderSquare(3)}
+                            {renderSquare(4)}
+                            {renderSquare(5)}
+                        </div>
+                        <div className="board--row">
+                            {renderSquare(6)}
+                            {renderSquare(7)}
+                            {renderSquare(8)}
+                        </div>
+                    </div>
+
+
+                    <ResetButton reset={reset} />
+                </div>
+
             </main>
         </>
     )
