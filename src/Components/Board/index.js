@@ -2,60 +2,63 @@ import React, { useState } from 'react';
 import Square from '../Square/index';
 import ResetButton from '../ResetButton/index';
 import r2h from '../../img/r2h.png'
-import fellowship from '../../img/fellowships.png'
 
 const Board = () => {
-    const intitalBoard = Array(9).fill(null)
-    const [squares, setSquares] = useState(intitalBoard)
+    // create an empty array for our board with 9 items (8 indexes)
+    const intialBoard = Array(9).fill(null);
+    //Setting up our board to be manipulated by state
+    const [squares, setSquares] = useState(intialBoard);
+    //who's turn is it
     const [playerXIsNext, setPlayerXIsNext] = useState(true)
 
-
-    const winner = calculateWinner(squares)
-
-    const handleClick = (e) => {
-        const newSquares = [...squares]
-        const winnerDeclared = Boolean(calculateWinner(squares))
-        const squareAlreadyFilled = Boolean(newSquares[e])
-        if (winnerDeclared || squareAlreadyFilled) return
-
-        newSquares[e] = playerXIsNext ? 'X' : 'O'
-        setSquares(newSquares)
-        setPlayerXIsNext(!playerXIsNext)
-    }
+    const winner = calculateWinner(squares);
 
     const renderSquare = (i) => {
-        return <Square value={squares[i]} onClick={() =>
-            handleClick(i)} />
+        return <Square value={squares[i]} onClick={() => {
+            handleClick(i)
+        }}/>
     }
 
-
-    function isBoardFull(squares) {
-        for (let i = 0; i < squares.length; i++) {
-            if (squares[i] == null) {
-                return false;
-            }
-        }
-        return true;
+    const handleClick = (e) => {
+        // console.log(`${e} square was clicked`);
+        const newSquares = [...squares];
+        // check to see if the square is already filled
+        const squareAlreadyFilled = Boolean(newSquares[e]);
+        // has a winner been declared or is the square already being used
+        if (winner || squareAlreadyFilled){
+            return
+        };
+        newSquares[e] = playerXIsNext ? "X" : "O";
+        // Set new squares to display board update
+        setSquares(newSquares);
+        console.log(newSquares);
+        //set next player
+        setPlayerXIsNext(!playerXIsNext);
     }
-
-
-    function getStatus() {
-        if (winner) {
-            return "Congratulations Player " + winner +
-                ", you won!";
-        } else if (isBoardFull(squares)) {
-            return "Draw!";
-        } else {
-            return "Next Player is Player: " + (playerXIsNext ? "X" : "O");
-        }
-    }
-
 
     const reset = () => {
-        setSquares(intitalBoard)
-        setPlayerXIsNext(true)
+        setSquares(intialBoard);
+        setPlayerXIsNext(true);
     }
 
+    const isBoardFull = (squares) => {
+        for (let i = 0; i < squares.length; i++){
+            if (squares[i] == null){
+                return false
+            }
+        }
+        return true
+    }
+
+    const getStatus = () => {
+        if (winner){
+            return `Congratulations Player ${winner}, you won!`
+        } else if (isBoardFull(squares)){
+           return "Draw!" 
+        }else {
+            return `Next Player is Player: ${playerXIsNext ? "X" : "O"}`
+        }
+    }
     /**
  * calculateWinner (helper function)
  *
@@ -97,49 +100,47 @@ const Board = () => {
         return null;
     }
 
+    const changeStyle = () => {
+        if(winner) {
+            return 'winner'
+        } else if (getStatus() === 'Draw!'){
+            return 'draw'
+        } else {
+            return playerXIsNext ? "X" : 'O'
+        }
+    }
+
+
 
     return (
         <>
-            <main className={`main--container 
-            ${
-                (winner && getStatus() === "Congratulations Player " + winner + ", you won!" ||
-                    !winner && getStatus() === "Draw!") ?
-                    (getStatus() === "Draw!" ? "draw" : "winner")
-                    : (playerXIsNext ? "X" : "O")
-                }`
-            }
-            >
+            <main className={`main--container ${changeStyle()}`}>
                 <div className="logo">
                     <img src={r2h} alt="r2h logo" />
-                    <img src={fellowship} alt="fellowship" />
-                </div>
-                <div className="status">
+                </div> 
+                <div className='status'>
                     {getStatus()}
                 </div>
-
-                <div className="board--container">
-                    <div className="board">
-                        <div className="board--row">
+                <div className='board--container'>
+                    <div className='board'>
+                        <div className='board--row'>
                             {renderSquare(0)}
                             {renderSquare(1)}
                             {renderSquare(2)}
                         </div>
-                        <div className="board--row">
+                        <div className='board--row'>
                             {renderSquare(3)}
                             {renderSquare(4)}
                             {renderSquare(5)}
                         </div>
-                        <div className="board--row">
+                        <div className='board--row'>
                             {renderSquare(6)}
                             {renderSquare(7)}
                             {renderSquare(8)}
                         </div>
                     </div>
-
-
-                    <ResetButton reset={reset} />
                 </div>
-
+                <ResetButton reset={reset}/>
             </main>
         </>
     )

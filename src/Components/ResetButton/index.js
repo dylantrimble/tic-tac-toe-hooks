@@ -1,12 +1,12 @@
 import React from 'react';
 
-// Creating a component that will represent each square on my board.
-const ResetButton = (props) => {
+// Component for the reset button
+const ResetButton = ({reset}) => {
 
     return (
         <>
-            <button className="reset--button" onClick={props.reset}>
-                Reset game!
+            <button className='reset--button' onClick={reset}>
+                Reset Game!
             </button>
         </>
     )
